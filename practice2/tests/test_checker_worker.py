@@ -13,6 +13,12 @@ from sqlalchemy import select
 
 _ROOT = Path(__file__).resolve().parents[1]
 _CHK = _ROOT / "services" / "checker-worker"
+# В тестовом прогоне уже может быть загружен другой пакет `app`
+# (например, из api-gateway). Сбрасываем его, чтобы импортировать
+# правильный `app` из checker-worker.
+for _mod in list(sys.modules):
+    if _mod == "app" or _mod.startswith("app."):
+        del sys.modules[_mod]
 sys.path.insert(0, str(_CHK))
 os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
 os.environ["REDIS_URL"] = "redis://localhost:6379/0"

@@ -1,5 +1,6 @@
 import asyncio
 import contextlib
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
@@ -28,7 +29,7 @@ app.add_middleware(PrometheusMiddleware)
 
 
 @app.get("/healthz")
-async def healthz() -> dict[str, str]:
+async def healthz() -> dict[str, str | bool]:
     return {"status": "ok", "telegram_configured": bool(settings.telegram_bot_token)}
 
 

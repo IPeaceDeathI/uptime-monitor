@@ -1,21 +1,25 @@
 import time
 from typing import Callable
 
-from prometheus_client import Counter, Histogram
+from prometheus_client import Counter, Histogram, CollectorRegistry
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
+
+registry = CollectorRegistry()
 
 REQUESTS = Counter(
     "http_requests_total",
     "HTTP requests",
     ["method", "endpoint", "status"],
+    registry=registry,
 )
 REQUEST_DURATION = Histogram(
     "http_request_duration_seconds",
     "HTTP request latency",
     ["endpoint"],
     buckets=(0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10),
+    registry=registry,
 )
 
 

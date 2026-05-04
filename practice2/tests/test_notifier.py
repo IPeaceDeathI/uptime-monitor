@@ -12,9 +12,14 @@ import pytest
 
 _ROOT = Path(__file__).resolve().parents[1]
 _NTF = _ROOT / "services" / "notifier"
+# В тестовом прогоне уже может быть загружен другой пакет `app`.
+# Сбрасываем его, чтобы импортировать `app` именно из notifier.
+for _mod in list(sys.modules):
+    if _mod == "app" or _mod.startswith("app."):
+        del sys.modules[_mod]
 sys.path.insert(0, str(_NTF))
 os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
-os.environ["TELEGRAM_BOT_TOKEN"] = "TESTTOKEN"
+os.environ["TELEGRAM_BOT_TOKEN"] = "TESTTOKEN_12345"
 
 
 from app.listener import _send_telegram  # noqa: E402

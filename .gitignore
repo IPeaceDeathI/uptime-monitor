@@ -1,6 +1,7 @@
 # Local PlantUML JAR (download with scripts or CI)
 practice1/plantuml.jar
 task.zip
+task_text.txt
 task_extracted/
 __pycache__/
 *.pyc
