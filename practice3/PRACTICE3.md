@@ -26,10 +26,25 @@ docker build -t notifier:0.1 practice2/services/notifier
 
 ## Применение манифестов
 
-1. Отредактируйте [k8s/secret.yaml](k8s/secret.yaml) — поле `telegram-bot-token` (реальный токен бота).
-2. Выполните:
+1. Экспортируйте токен в переменную окружения `TELEGRAM_BOT_TOKEN`.
+2. Примените секрет с подстановкой переменной:
+
+```powershell
+$env:TELEGRAM_BOT_TOKEN="<ваш_токен>"
+kubectl create secret generic uptime-secrets `
+  --namespace uptime-monitor `
+  --from-literal=postgres-password=uptime `
+  --from-literal=telegram-bot-token=$env:TELEGRAM_BOT_TOKEN `
+  --from-literal=database-url="postgresql+asyncpg://uptime:uptime@postgres:5432/uptime" `
+  --dry-run=client -o yaml | kubectl apply -f -
+kubectl apply -f practice3/k8s/
+```
+
+Для Linux/macOS:
 
 ```bash
+export TELEGRAM_BOT_TOKEN="<ваш_токен>"
+envsubst < practice3/k8s/secret.yaml | kubectl apply -f -
 kubectl apply -f practice3/k8s/
 ```
 

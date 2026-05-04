@@ -1,3 +1,4 @@
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -7,7 +8,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+asyncpg://uptime:uptime@localhost:5432/uptime"
     redis_url: str = "redis://localhost:6379/0"
     redis_channel: str = "site_status_changed"
-    telegram_bot_token: str = "dummy-token"
+    telegram_bot_token: str = Field(..., min_length=10)
 
 
 settings = Settings()

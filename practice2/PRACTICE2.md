@@ -2,7 +2,7 @@
 
 ## Ссылка на репозиторий
 
-Замените на URL вашего публичного репозитория GitHub/GitLab: `https://github.com/<user>/uptime-monitor`
+URL публичного репозитория GitHub: `https://github.com/IPeaceDeathI/uptime-monitor`
 
 ## Использованные ИИ-инструменты
 
@@ -59,4 +59,4 @@ docker compose up --build
 - Checker metrics: http://localhost:8001/metrics  
 - Notifier metrics: http://localhost:8002/metrics  
 
-Переменная `TELEGRAM_BOT_TOKEN` задаётся в `.env` рядом с `docker-compose.yml` или в окружении хоста.
+Переменная `TELEGRAM_BOT_TOKEN` задаётся в `practice2/.env` рядом с `docker-compose.yml` (или через окружение хоста). В сервисе `notifier` токен обязателен и не имеет значения по умолчанию.

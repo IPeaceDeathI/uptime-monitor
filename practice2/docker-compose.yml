@@ -56,10 +56,12 @@ services:
   notifier:
     build:
       context: ./services/notifier
+    env_file:
+      - ./.env
     environment:
       DATABASE_URL: postgresql+asyncpg://uptime:uptime@postgres:5432/uptime
       REDIS_URL: redis://redis:6379/0
-      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-000000000:dummy-token-for-local-dev}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
     ports:
       - "8002:8002"
     depends_on:

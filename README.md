@@ -23,8 +23,6 @@ docker compose up --build
 - Метрики checker: http://localhost:8001/metrics  
 - Метрики notifier: http://localhost:8002/metrics  
 
-Задайте реальный `TELEGRAM_BOT_TOKEN` через переменную окружения или файл `.env` рядом с `docker-compose.yml`.
-
 ## Тесты
 
 ```bash
@@ -35,7 +33,7 @@ pytest -v
 
 ## Ссылка на репозиторий
 
-_Укажите URL публичного GitHub/GitLab после публикации._
+URL публичного репозитория GitHub: `https://github.com/IPeaceDeathI/uptime-monitor`
 
 ## Реализованные усложнения (+баллы)
 
