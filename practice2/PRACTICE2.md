@@ -1,4 +1,4 @@
-<img width="703" height="812" alt="image" src="https://github.com/user-attachments/assets/3ff04e86-2484-4c99-9009-6292da94f346" /># Практика №2 — MVP Uptime Monitor
+# Практика №2 — MVP Uptime Monitor
 
 ## Ссылка на репозиторий
 
