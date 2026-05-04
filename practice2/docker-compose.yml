@@ -1,0 +1,74 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: uptime
+      POSTGRES_PASSWORD: uptime
+      POSTGRES_DB: uptime
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uptime -d uptime"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+    environment:
+      DATABASE_URL: postgresql+asyncpg://uptime:uptime@postgres:5432/uptime
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  checker-worker:
+    build:
+      context: ./services/checker-worker
+    environment:
+      DATABASE_URL: postgresql+asyncpg://uptime:uptime@postgres:5432/uptime
+      REDIS_URL: redis://redis:6379/0
+      POLL_INTERVAL_SEC: "10"
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api-gateway:
+        condition: service_started
+
+  notifier:
+    build:
+      context: ./services/notifier
+    environment:
+      DATABASE_URL: postgresql+asyncpg://uptime:uptime@postgres:5432/uptime
+      REDIS_URL: redis://redis:6379/0
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-000000000:dummy-token-for-local-dev}
+    ports:
+      - "8002:8002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api-gateway:
+        condition: service_started
+
+volumes:
+  pgdata:

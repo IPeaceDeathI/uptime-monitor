@@ -1,0 +1,19 @@
+@startuml UptimeMonitor_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Контекстная диаграмма (C1) — Uptime Monitor (вариант 9)
+
+Person(admin, "Администратор / DevOps", "Регистрирует URL для мониторинга, просматривает историю проверок, настраивает уведомления в Telegram")
+
+System(uptime, "Uptime Monitor", "Микросервисная система проверки доступности сайтов, хранения результатов и оповещений")
+
+System_Ext(web, "Мониторящиеся сайты", "HTTP/HTTPS ресурсы, доступность которых проверяется")
+System_Ext(telegram, "Telegram Bot API", "Внешний API для доставки уведомлений о смене статуса UP/DOWN")
+
+Rel(admin, uptime, "Использует", "HTTPS / REST JSON")
+Rel(uptime, web, "Периодические HTTP GET", "HTTPS")
+Rel(uptime, telegram, "Отправка сообщений", "HTTPS")
+
+@enduml

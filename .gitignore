@@ -1,0 +1,10 @@
+# Local PlantUML JAR (download with scripts or CI)
+practice1/plantuml.jar
+task.zip
+task_extracted/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.venv/
+venv/

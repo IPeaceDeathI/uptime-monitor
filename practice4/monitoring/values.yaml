@@ -1,0 +1,10 @@
+# Фрагмент values для kube-prometheus-stack: собирать ServiceMonitor'ы из всех неймспейсов.
+# Установка:
+#   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+#   helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+#     -n monitoring --create-namespace -f practice4/monitoring/values.yaml
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector: {}

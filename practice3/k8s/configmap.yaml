@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uptime-config
+  namespace: uptime-monitor
+data:
+  REDIS_URL: "redis://redis:6379/0"
+  REDIS_CHANNEL: "site_status_changed"
+  POLL_INTERVAL_SEC: "10"

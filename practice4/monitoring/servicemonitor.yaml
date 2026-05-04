@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: uptime-monitor-apps
+  namespace: uptime-monitor
+  labels:
+    release: monitoring
+    app.kubernetes.io/part-of: uptime-monitor
+spec:
+  namespaceSelector:
+    matchNames:
+      - uptime-monitor
+  selector:
+    matchLabels:
+      release: monitoring
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 10s

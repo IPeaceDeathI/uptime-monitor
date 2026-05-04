@@ -1,0 +1,28 @@
+@startuml UptimeMonitor_API_Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Компоненты (C3) — контейнер api-gateway
+
+Container_Boundary(api, "api-gateway") {
+    Component(sites_router, "SitesRouter", "FastAPI Router", "POST/GET/DELETE /sites, GET /sites/{id}/checks")
+    Component(subs_router, "SubscribersRouter", "FastAPI Router", "POST/GET /subscribers")
+    Component(metrics, "MetricsMiddleware", "prometheus_client", "Счётчики HTTP, гистограмма latency, /metrics")
+    Component(site_service, "SiteService", "Python", "Бизнес-логика CRUD сайтов и истории")
+    Component(repo, "SitesRepository", "SQLAlchemy", "Доступ к таблицам sites, check_results")
+    Component(db_session, "AsyncSession", "SQLAlchemy asyncio", "Управление сессией БД")
+}
+
+ContainerDb(pg, "PostgreSQL", "RDBMS", "Хранение данных")
+
+Rel(sites_router, site_service, "Вызывает")
+Rel(subs_router, site_service, "Вызывает")
+Rel(site_service, repo, "Использует")
+Rel(repo, db_session, "Использует")
+Rel(db_session, pg, "SQL", "TCP")
+
+Rel(metrics, sites_router, "Оборачивает запросы", "ASGI")
+Rel(metrics, subs_router, "Оборачивает запросы", "ASGI")
+
+@enduml

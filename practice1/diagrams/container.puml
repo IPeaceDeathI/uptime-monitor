@@ -1,0 +1,29 @@
+@startuml UptimeMonitor_Containers
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Диаграмма контейнеров (C2) — Uptime Monitor
+
+Person(admin, "Администратор", "Управляет мониторингом")
+
+System_Boundary(uptime, "Uptime Monitor") {
+    Container(api, "api-gateway", "Python, FastAPI", "REST API: сайты, подписчики, история проверок, /metrics")
+    Container(checker, "checker-worker", "Python, asyncio, httpx", "Периодические проверки URL, запись результатов, публикация событий в Redis")
+    Container(notifier, "notifier", "Python, FastAPI", "Подписка на Redis Pub/Sub, отправка уведомлений в Telegram, /metrics")
+    ContainerDb(pg, "PostgreSQL", "PostgreSQL 16", "Сайты, результаты проверок, подписчики")
+    ContainerDb(redis, "Redis", "Redis 7", "Pub/Sub канал смены статуса сайта")
+}
+
+System_Ext(web, "Мониторящиеся сайты", "HTTP/HTTPS")
+System_Ext(tg, "Telegram Bot API", "HTTPS")
+
+Rel(admin, api, "REST", "HTTPS / JSON")
+Rel(api, pg, "Читает и пишет", "TCP / asyncpg, SQL")
+Rel(checker, pg, "Читает и пишет", "TCP / asyncpg, SQL")
+Rel(checker, web, "HTTP GET проверки", "HTTPS")
+Rel(checker, redis, "Публикует события", "Redis Pub/Sub")
+Rel(notifier, redis, "Подписывается", "Redis Pub/Sub")
+Rel(notifier, tg, "sendMessage", "HTTPS")
+
+@enduml

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checker-worker
+  namespace: uptime-monitor
+  labels:
+    app: checker-worker
+    app.kubernetes.io/name: checker-worker
+    app.kubernetes.io/part-of: uptime-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checker-worker
+  template:
+    metadata:
+      labels:
+        app: checker-worker
+        app.kubernetes.io/name: checker-worker
+        app.kubernetes.io/part-of: uptime-monitor
+    spec:
+      containers:
+        - name: checker-worker
+          image: checker-worker:0.1
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: uptime-config
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: uptime-secrets
+                  key: database-url
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
