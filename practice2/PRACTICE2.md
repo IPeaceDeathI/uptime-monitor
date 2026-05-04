@@ -1,4 +1,4 @@
-# Практика №2 — MVP Uptime Monitor
+<img width="703" height="812" alt="image" src="https://github.com/user-attachments/assets/3ff04e86-2484-4c99-9009-6292da94f346" /># Практика №2 — MVP Uptime Monitor
 
 ## Ссылка на репозиторий
 
@@ -32,9 +32,11 @@ URL публичного репозитория GitHub: `https://github.com/IPea
 ## Скриншоты (вставьте в отчёт при сдаче)
 
 1. Успешный прогон тестов: `cd practice2 && pip install -r services/api-gateway/requirements.txt -r tests/requirements.txt && pytest -v`
-2. Логи `docker compose up --build` с здоровыми сервисами `api-gateway`, `checker-worker`, `notifier`.
+   <img width="1099" height="353" alt="image" src="https://github.com/user-attachments/assets/a6539e39-0b48-4101-896c-f7632b61ad56" />
 
-> Файлы скриншотов можно положить в `practice2/screenshots/` (создайте каталог при необходимости).
+3. Логи `docker compose up --build` с здоровыми сервисами `api-gateway`, `checker-worker`, `notifier`.
+  <img width="1280" height="1001" alt="image" src="https://github.com/user-attachments/assets/23f0e424-adcc-49d0-9816-3d62a20b5a33" />
+
 
 ## Схема взаимодействия микросервисов
 
@@ -57,6 +59,6 @@ docker compose up --build
 
 - API: http://localhost:8000/docs  
 - Checker metrics: http://localhost:8001/metrics  
-- Notifier metrics: http://localhost:8002/metrics  
-
-Переменная `TELEGRAM_BOT_TOKEN` задаётся в `practice2/.env` рядом с `docker-compose.yml` (или через окружение хоста). В сервисе `notifier` токен обязателен и не имеет значения по умолчанию.
+- Notifier metrics: http://localhost:8002/metrics
+  <img width="1280" height="678" alt="image" src="https://github.com/user-attachments/assets/18f899eb-cbb2-4676-9076-77054113fbe7" />
+  <img width="703" height="812" alt="image" src="https://github.com/user-attachments/assets/5869f7c9-88bf-46a5-87f1-8748bc0e4807" />
